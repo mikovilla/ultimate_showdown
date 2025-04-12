@@ -2,3 +2,6 @@ helm template release ./ > release.yaml
 kubectl apply -f release.yaml
 kubectl delete job --all
 kubectl apply -f release.yaml
+
+when debugging vs, inside docker run the ff to get the ip
+hostname -i
