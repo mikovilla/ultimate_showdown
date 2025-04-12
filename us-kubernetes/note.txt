@@ -1,0 +1,4 @@
+helm template release ./ > release.yaml
+kubectl apply -f release.yaml
+kubectl delete job --all
+kubectl apply -f release.yaml

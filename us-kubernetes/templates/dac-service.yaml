@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dac-deployment
+  labels:
+    app: dac
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dac
+  template:
+    metadata:
+      labels:
+        app: dac
+    spec:
+      containers:
+      - name: dac-container
+        image: dac-app:latest
+        imagePullPolicy: IfNotPresent #do not pull from registry / Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dac-service
+spec:
+  selector:
+    app: dac
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  clusterIP: None  # Headless service

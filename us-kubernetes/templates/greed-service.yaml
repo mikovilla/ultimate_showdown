@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greed-deployment
+  labels:
+    app: greed
+spec:
+  replicas: 1  # You can scale this number based on your need
+  selector:
+    matchLabels:
+      app: greed
+  template:
+    metadata:
+      labels:
+        app: greed
+    spec:
+      containers:
+      - name: greed-container
+        image: greed-app:latest
+        imagePullPolicy: IfNotPresent #do not pull from registry / Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greed-service
+spec:
+  selector:
+    app: greed
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  clusterIP: None  # Headless service, this allows direct access to pod IPs (for DNS resolution)

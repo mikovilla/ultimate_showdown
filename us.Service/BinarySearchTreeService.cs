@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Text;
 using us.Application;
 using us.Domain;
@@ -11,10 +12,13 @@ namespace us.Service
         public static void GetResponse(HttpListener listener, SearchType searchType, string wordToSearch)
         {
             HttpListenerContext context = listener.GetContext();
+
+            Stopwatch sw = Stopwatch.StartNew();
             string message = new StreamReader(context.Request.InputStream).ReadToEnd();
             Console.WriteLine($"Message Length: {message.Length}");
             var tree = message.ToBinarySearchTree();
             var root = tree.Root;
+            
             var value = searchType switch
             {
                 SearchType.Greedy => root.Search(wordToSearch, SearchType.Greedy),
@@ -22,8 +26,12 @@ namespace us.Service
                 SearchType.DynamicProgramming => root.Search(wordToSearch, SearchType.DynamicProgramming),
                 _ => ""
             };
+            Console.WriteLine($"{searchType.ToString()} search ran for {sw.Elapsed}ms.");
 
             string reply = $"From {searchType.ToString()},\r\nValue:\r\n{wordToSearch}: {value}.";
+            Console.WriteLine($"{reply}");
+            sw.Restart();
+
             byte[] buffer = Encoding.UTF8.GetBytes(reply);
 
             context.Response.ContentLength64 = buffer.Length;

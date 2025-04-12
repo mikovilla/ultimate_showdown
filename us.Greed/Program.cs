@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using us.Service;
 
 HttpListener listener = new HttpListener();
@@ -11,9 +10,6 @@ bool isListeningFromSeed = true;
 
 while (isListeningFromSeed)
 {
-    var sw = Stopwatch.StartNew();
     BinarySearchTreeService.GetResponse(listener, us.Domain.Constants.SearchType.Greedy, "programme");
-    Console.WriteLine($"Greedy search ran for {sw.ElapsedMilliseconds}ms.");
-    sw.Restart();
     isListeningFromSeed = false;
 }

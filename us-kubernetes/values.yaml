@@ -1,0 +1,18 @@
+apps:
+  replicaCount: 4
+  services:
+    - name: sreed
+      port: 80
+    - name: greed
+      port: 80
+    - name: dac
+      port: 80
+    - name: dp
+      port: 80
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
